@@ -3,6 +3,7 @@ package com.aquacore.food;
 import com.aquacore.food.commands.FoodCommand;
 import com.aquacore.food.config.ConfigManager;
 import com.aquacore.food.data.PlayerDataManager;
+import com.aquacore.food.listeners.DamageListener;
 import com.aquacore.food.listeners.FoodListener;
 import com.aquacore.food.papi.PAPIExpansion;
 import com.aquacore.food.tasks.StatTask;

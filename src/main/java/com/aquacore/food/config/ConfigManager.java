@@ -59,7 +59,7 @@ public class ConfigManager {
     public RegenRule getRegenRule(int average) {
         // Find the closest lower or equal key (0, 10, 20...)
         int key = (average / 10) * 10;
-        return regenRules.getOrDefault(key, new RegenRule(0, 0));
+        return regenRules.getOrDefault(key, new RegenRule(0, 0, 0, 0));
     }
 
     public int getDecayFrequency(String stat) {
