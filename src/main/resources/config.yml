@@ -94,13 +94,32 @@ regeneration:
 
 # Effects and Particles
 # Based on average stats
-# Ranges can be positive or negative (though stats are 0-100, so average is 0-100).
-# "dividido en 2 positivos y negativos" -> Maybe the user means effects can be "good" (positive) or "bad" (negative) depending on range?
-# Or maybe the stats can go negative? "esta puede ser positiva o negativa" (in command add).
-# But "varia en un rango de 0 a 100, nunca mas o menos".
-# So stats are 0-100.
+effects:
+  high_stats:
+    min: 80
+    max: 100
+    effects:
+      - "SPEED;1"
+      - "JUMP;1"
+    particles: "VILLAGER_HAPPY"
+    # Command format: command;interval_in_seconds
+    # <player> placeholder is supported
+    commands:
+      - "give <player> apple 1;60"
+  mid_stats:
+    min: 40
+    max: 79
+    effects: []
+    particles: ""
+    commands: []
+  low_stats:
+    min: 0
     max: 39
     effects:
       - "SLOWNESS;1"
       - "WEAKNESS;1"
     particles: "VILLAGER_ANGRY"
+    commands: []
+
+# Default value for stats when a player dies
+default-stats-on-death: 25
