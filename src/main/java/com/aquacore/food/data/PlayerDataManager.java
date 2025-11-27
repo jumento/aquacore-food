@@ -6,18 +6,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class PlayerDataManager {
 
     private final AquaCoreFood plugin;
     private final NamespacedKey carbsKey;
     private final NamespacedKey protKey;
     private final NamespacedKey vitKey;
+    private final Map<UUID, Long> lastFoodRegen = new HashMap<>();
 
     public PlayerDataManager(AquaCoreFood plugin) {
         this.plugin = plugin;
         this.carbsKey = new NamespacedKey(plugin, "carbohydrates");
         this.protKey = new NamespacedKey(plugin, "proteins");
         this.vitKey = new NamespacedKey(plugin, "vitamins");
+    }
+
+    public long getLastFoodRegen(Player player) {
+        return lastFoodRegen.getOrDefault(player.getUniqueId(), 0L);
+    }
+
+    public void setLastFoodRegen(Player player, long time) {
+        lastFoodRegen.put(player.getUniqueId(), time);
     }
 
     public int getCarbs(Player player) {
@@ -46,7 +59,8 @@ public class PlayerDataManager {
 
     private int getStat(Player player, NamespacedKey key) {
         PersistentDataContainer container = player.getPersistentDataContainer();
-        return container.getOrDefault(key, PersistentDataType.INTEGER, 100); // Default 100? Or 0? Assuming 100 as max health start.
+        return container.getOrDefault(key, PersistentDataType.INTEGER, 100); // Default 100? Or 0? Assuming 100 as max
+                                                                             // health start.
     }
 
     private void setStat(Player player, NamespacedKey key, int value) {
@@ -71,7 +85,7 @@ public class PlayerDataManager {
                 break;
         }
     }
-    
+
     public int getAverage(Player player) {
         return (getCarbs(player) + getProt(player) + getVit(player)) / 3;
     }

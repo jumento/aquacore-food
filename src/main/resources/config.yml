@@ -14,65 +14,76 @@ decay:
     frequency: 50
     amount: 1
 
+# Damage Settings
+# Max amount to reduce from stats when taking damage
+# Random amount between 0 and this value
+damage:
+  carbohydrates: 5
+  proteins: 5
+  vitamins: 5
+
 # Regeneration Settings
 # Based on the average of the 3 stats (0-100)
-# Ranges are checked from top to bottom.
-# Power: Regeneration amplifier (0 = Regen I, 1 = Regen II, etc. - though standard regen is usually just amount)
-# Actually, Minecraft Regen effect heals based on amplifier.
-# But the request says "potencia de 1 y una longitud de 0.010".
-# "Longitud" might refer to the duration of the regen effect or the interval between heals if we implement custom regen.
-# Given "longitud de 0.010", this looks like a very small number, possibly related to exhaust or saturation gain?
-# Re-reading: "tendra una potencia de 1 y una longitud de 0.010"
-# Maybe "longitud" implies saturation restoration amount or speed?
-# Or maybe it's "Exhaustion" reduction?
-# Let's assume "Power" is the regeneration amount/amplifier and "Length" is the duration or frequency modifier.
-# However, standard Regen effect has Duration and Amplifier.
-# Let's implement it as: We apply a Regeneration effect.
-# Power = Amplifier.
-# Length = Duration? 0.010 is too short for seconds.
-# Maybe "Longitud" is the saturation added?
-# "intervenir la saturacion... solo es incrementativa en base a 3 estadisticas"
-# So maybe this defines how much saturation is added?
-# Let's assume:
-# Power = Amount of Saturation to add? Or Regen Amplifier?
-# The prompt says: "activa la regeneracion... potencia de 1 y una longitud de 0.010"
-# Let's interpret "Longitud" as "Saturation Amount" to add periodically, and "Potencia" as "Regen Amount" (HP).
-# Or maybe "Longitud" is the exhaust level reduction?
-# Let's stick to the user's terms in config and handle logic in code.
+# Power: Regeneration amplifier (0 = Regen I)
+# Length: Saturation amount to add
+# Food: Amount of food to add
+# Interval: Time in seconds between food/saturation addition
 regeneration:
   '100':
     power: 1
-    length: 0.010
+    length: 0.5
+    food: 1
+    interval: 5
   '90':
     power: 1
-    length: 0.009
+    length: 0.4
+    food: 1
+    interval: 10
   '80':
     power: 1
-    length: 0.008
+    length: 0.3
+    food: 1
+    interval: 15
   '70':
     power: 1
-    length: 0.007
+    length: 0.2
+    food: 1
+    interval: 20
   '60':
     power: 0
-    length: 0.006
+    length: 0.1
+    food: 0
+    interval: 0
   '50':
     power: 0
-    length: 0.005
+    length: 0.0
+    food: 0
+    interval: 0
   '40':
     power: 0
-    length: 0.004
+    length: 0.0
+    food: 0
+    interval: 0
   '30':
     power: 0
-    length: 0.000
+    length: 0.0
+    food: 0
+    interval: 0
   '20':
     power: 0
-    length: 0.000
+    length: 0.0
+    food: 0
+    interval: 0
   '10':
     power: 0
-    length: 0.000
+    length: 0.0
+    food: 0
+    interval: 0
   '0':
     power: 0
-    length: 0.000
+    length: 0.0
+    food: 0
+    interval: 0
 
 # Effects and Particles
 # Based on average stats

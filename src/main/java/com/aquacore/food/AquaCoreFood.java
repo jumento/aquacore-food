@@ -28,6 +28,7 @@ public class AquaCoreFood extends JavaPlugin {
 
         // Register Listeners
         getServer().getPluginManager().registerEvents(new FoodListener(this), this);
+        getServer().getPluginManager().registerEvents(new DamageListener(this), this);
 
         // Register Commands
         getCommand("aquafood").setExecutor(new FoodCommand(this));

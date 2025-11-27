@@ -18,17 +18,31 @@ AquaCore-Food is a custom Minecraft plugin designed to enhance food and saturati
 
 ## Commands
 
-| Command | Alias | Description | Permission |
-| :--- | :--- | :--- | :--- |
-| `/aquafood help` | `food`, `afood` | Main command. Shows help menu. | `aquafood.use` |
-| `/aquafood reload` | | Reloads the configuration. | `aquafood.admin` |
+| Command | Description | Permission |
+| :--- | :--- | :--- |
+| `/aquafood help` | Shows the help menu. | `aquafood.use` |
+| `/aquafood carbs` | Shows your current carbohydrates level. | `aquafood.use` |
+| `/aquafood vit` | Shows your current vitamins level. | `aquafood.use` |
+| `/aquafood prot` | Shows your current proteins level. | `aquafood.use` |
+| `/aquafood set <stat> <val> <player>` | Sets a specific stat for a player. | `aquafood.admin` |
+| `/aquafood add <stat> <val> <player>` | Adds (or subtracts) from a stat for a player. | `aquafood.admin` |
+| `/aquafood reload` | Reloads the plugin configuration. | `aquafood.admin` |
 
 ## Permissions
 
-| Permission | Description | Default |
+| Permission | Description | Recommended Role |
 | :--- | :--- | :--- |
-| `aquafood.use` | Allows use of basic commands. | `true` |
-| `aquafood.admin` | Allows use of admin commands (set, add, reload). | `op` |
+| `aquafood.use` | Allows access to basic info commands (`help`, `carbs`, `vit`, `prot`). | Default / Players |
+| `aquafood.admin` | Grants access to administrative commands (`set`, `add`, `reload`). | Admins / Ops |
+
+## Placeholders
+
+| Placeholder | Description |
+| :--- | :--- |
+| `%aquafood_carbs%` | Shows current carbohydrates level. |
+| `%aquafood_prot%` | Shows current proteins level. |
+| `%aquafood_vit%` | Shows current vitamins level. |
+| `%aquafood_average%` | Shows the average of all three stats. |
 
 ## Configuration
 

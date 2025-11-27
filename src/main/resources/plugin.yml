@@ -11,7 +11,7 @@ commands:
     description: Main command for AquaCore-Food
     usage: /aquafood help
     permission: aquafood.use
-    aliases: [food, afood]
+    aliases: [afood]
 
 permissions:
   aquafood.use:
