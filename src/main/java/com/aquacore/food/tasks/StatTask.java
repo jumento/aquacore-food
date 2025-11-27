@@ -27,14 +27,35 @@ public class StatTask extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             handleDecay(player);
             handleRegen(player);
-            handleDecay(player);
-            handleRegen(player);
             handleReplenish(player);
             handleEffects(player);
         }
-        // For MVP, let's use global tick count. If freq is 45s, we check if ticks %
-        // (45*20) == 0.
-        // Wait, ticks is in ticks. freq is in seconds.
+    }
+
+    private void handleDecay(Player player) {
+        PlayerDataManager data = plugin.getPlayerDataManager();
+        ConfigManager config = plugin.getConfigManager();
+
+        boolean sprinting = player.isSprinting();
+        int freqMod = sprinting ? 2 : 1;
+
+        // Calculate amount modifiers based on sprinting
+        int carbMod = sprinting ? config.getDamageMax("carbohydrates") : 1;
+        int protMod = sprinting ? config.getDamageMax("proteins") : 1;
+        int vitMod = sprinting ? config.getDamageMax("vitamins") : 1;
+
+        checkAndDecay(player, "carbohydrates", data.getCarbs(player),
+                config.getDecayFrequency("carbohydrates") / freqMod, config.getDecayAmount("carbohydrates") * carbMod);
+        checkAndDecay(player, "proteins", data.getProt(player), config.getDecayFrequency("proteins") / freqMod,
+                config.getDecayAmount("proteins") * protMod);
+        checkAndDecay(player, "vitamins", data.getVit(player), config.getDecayFrequency("vitamins") / freqMod,
+                config.getDecayAmount("vitamins") * vitMod);
+    }
+
+    private void checkAndDecay(Player player, String stat, int currentVal, int freq, int amount) {
+        if (freq <= 0)
+            return;
+        // Use global ticks for synchronization
         if (ticks % (freq * 20L) == 0) {
             plugin.getPlayerDataManager().addStat(player, stat, -amount);
         }
