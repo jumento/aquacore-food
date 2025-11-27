@@ -58,24 +58,6 @@ public class StatTask extends BukkitRunnable {
 
         // Calculate amount modifiers based on sprinting and penalty
         int carbMod = (sprinting ? config.getDamageMax("carbohydrates") : 1) * penaltyMod;
-        int protMod = (sprinting ? config.getDamageMax("proteins") : 1) * penaltyMod;
-        int vitMod = (sprinting ? config.getDamageMax("vitamins") : 1) * penaltyMod;
-
-        checkAndDecay(player, "carbohydrates", data.getCarbs(player),
-                Math.max(1, config.getDecayFrequency("carbohydrates") / freqMod),
-                config.getDecayAmount("carbohydrates") * carbMod);
-        checkAndDecay(player, "proteins", data.getProt(player),
-                Math.max(1, config.getDecayFrequency("proteins") / freqMod),
-                config.getDecayAmount("proteins") * protMod);
-        checkAndDecay(player, "vitamins", data.getVit(player),
-                Math.max(1, config.getDecayFrequency("vitamins") / freqMod),
-                config.getDecayAmount("vitamins") * vitMod);
-    }
-
-    private void checkAndDecay(Player player, String stat, int currentVal, int freq, int amount) {
-        if (freq <= 0)
-            return;
-        // Use global ticks for synchronization
         if (ticks % (freq * 20L) == 0) {
             plugin.getPlayerDataManager().addStat(player, stat, -amount);
         }
@@ -117,6 +99,12 @@ public class StatTask extends BukkitRunnable {
 
         ConfigManager config = plugin.getConfigManager();
         PlayerDataManager data = plugin.getPlayerDataManager();
+
+        // If all stats are zero, do not replenish (prevent free food bug)
+        if (data.getCarbs(player) <= 0 && data.getProt(player) <= 0 && data.getVit(player) <= 0) {
+            return;
+        }
+
         long lastReplenish = data.getLastReplenish(player);
         long currentTime = System.currentTimeMillis();
 
