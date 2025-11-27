@@ -107,21 +107,30 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        PlayerDataManager data = plugin.getPlayerDataManager();
+        if (stat.equalsIgnoreCase("all")) {
+            data.setCarbs(target, val);
+            data.setProt(target, val);
+            data.setVit(target, val);
+            sender.sendMessage("§aSet all stats for " + target.getName() + " to " + val);
+            return;
+        }
+
         switch (stat.toLowerCase()) {
             case "carbs":
             case "carbohydrates":
-                plugin.getPlayerDataManager().setCarbs(target, val);
+                data.setCarbs(target, val);
                 break;
             case "prot":
             case "proteins":
-                plugin.getPlayerDataManager().setProt(target, val);
+                data.setProt(target, val);
                 break;
             case "vit":
             case "vitamins":
-                plugin.getPlayerDataManager().setVit(target, val);
+                data.setVit(target, val);
                 break;
             default:
-                sender.sendMessage("§cInvalid stat. Use carbs, prot, or vit.");
+                sender.sendMessage("§cInvalid stat. Use carbs, prot, vit, or all.");
                 return;
         }
         sender.sendMessage("§aSet " + stat + " to " + val + " for " + target.getName());
@@ -150,7 +159,16 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        plugin.getPlayerDataManager().addStat(target, stat, val);
+        PlayerDataManager data = plugin.getPlayerDataManager();
+        if (stat.equalsIgnoreCase("all")) {
+            data.addStat(target, "carbs", val);
+            data.addStat(target, "prot", val);
+            data.addStat(target, "vit", val);
+            sender.sendMessage("§aAdded " + val + " to all stats for " + target.getName());
+            return;
+        }
+
+        data.addStat(target, stat, val);
         sender.sendMessage("§aAdded " + val + " to " + stat + " for " + target.getName());
     }
 
@@ -170,7 +188,7 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
             return Arrays.asList("help", "carbs", "vit", "prot", "set", "add", "reload");
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add"))) {
-            return Arrays.asList("carbs", "vit", "prot");
+            return Arrays.asList("carbs", "vit", "prot", "all");
         }
         if (args.length == 4 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add"))) {
             return null; // Player names
