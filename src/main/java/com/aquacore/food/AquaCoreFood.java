@@ -4,6 +4,7 @@ import com.aquacore.food.commands.FoodCommand;
 import com.aquacore.food.config.ConfigManager;
 import com.aquacore.food.data.PlayerDataManager;
 import com.aquacore.food.listeners.DamageListener;
+import com.aquacore.food.listeners.DeathListener;
 import com.aquacore.food.listeners.FoodListener;
 import com.aquacore.food.papi.PAPIExpansion;
 import com.aquacore.food.tasks.StatTask;
@@ -30,12 +31,13 @@ public class AquaCoreFood extends JavaPlugin {
         // Register Listeners
         getServer().getPluginManager().registerEvents(new FoodListener(this), this);
         getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+        getServer().getPluginManager().registerEvents(new DeathListener(this), this);
 
         // Register Commands
         getCommand("aquafood").setExecutor(new FoodCommand(this));
 
         // Register Tasks
-        new StatTask(this).runTaskTimer(this, 20L, 20L); // Run every second, internal logic handles frequencies
+        new StatTask(this).runTaskTimer(this, 20L, 20L); // Run every second
 
         // Register PlaceholderAPI
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

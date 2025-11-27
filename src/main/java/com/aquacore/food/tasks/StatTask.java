@@ -28,6 +28,7 @@ public class StatTask extends BukkitRunnable {
             handleDecay(player);
             handleRegen(player);
             handleReplenish(player);
+            handleStarvation(player);
             handleEffects(player);
         }
 
@@ -184,6 +185,19 @@ public class StatTask extends BukkitRunnable {
                     } catch (Exception ignored) {
                     }
                 }
+            }
+        }
+    }
+
+    private void handleStarvation(Player player) {
+        if (player.getFoodLevel() > 0)
+            return;
+
+        // Apply starvation damage every 4 seconds (80 ticks)
+        // We use global ticks, so we check if ticks % 80 == 0
+        if (ticks % 80 == 0) {
+            if (player.getHealth() > 0) {
+                player.damage(1.0); // Deal 0.5 hearts of damage
             }
         }
     }

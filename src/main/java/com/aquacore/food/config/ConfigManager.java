@@ -14,6 +14,7 @@ public class ConfigManager {
     private Map<String, Integer> damageSettings = new HashMap<>();
     private int replenishDelay = 5;
     private int replenishAmount = 1;
+    private int defaultStatsOnDeath = 25;
 
     public ConfigManager(AquaCoreFood plugin) {
         this.plugin = plugin;
@@ -43,6 +44,8 @@ public class ConfigManager {
                 config.set("food-replenish.delay", 5);
             if (!config.contains("food-replenish.amount"))
                 config.set("food-replenish.amount", 1);
+            if (!config.contains("default-stats-on-death"))
+                config.set("default-stats-on-death", 25);
             plugin.saveConfig();
             plugin.getLogger().info("Config updated to version 1.");
         }
@@ -82,6 +85,7 @@ public class ConfigManager {
     private void loadReplenishSettings() {
         replenishDelay = plugin.getConfig().getInt("food-replenish.delay", 5);
         replenishAmount = plugin.getConfig().getInt("food-replenish.amount", 1);
+        defaultStatsOnDeath = plugin.getConfig().getInt("default-stats-on-death", 25);
     }
 
     public RegenRule getRegenRule(int average) {
@@ -108,6 +112,10 @@ public class ConfigManager {
 
     public int getReplenishAmount() {
         return replenishAmount;
+    }
+
+    public int getDefaultStatsOnDeath() {
+        return defaultStatsOnDeath;
     }
 
     public static class RegenRule {
