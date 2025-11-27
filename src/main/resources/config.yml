@@ -99,22 +99,6 @@ regeneration:
 # Or maybe the stats can go negative? "esta puede ser positiva o negativa" (in command add).
 # But "varia en un rango de 0 a 100, nunca mas o menos".
 # So stats are 0-100.
-# We will define ranges for effects.
-effects:
-  high_stats:
-    min: 80
-    max: 100
-    effects:
-      - "SPEED;1"
-      - "JUMP;1"
-    particles: "VILLAGER_HAPPY"
-  mid_stats:
-    min: 40
-    max: 79
-    effects: []
-    particles: ""
-  low_stats:
-    min: 0
     max: 39
     effects:
       - "SLOWNESS;1"

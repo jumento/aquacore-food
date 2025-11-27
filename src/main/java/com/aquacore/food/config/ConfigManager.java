@@ -37,9 +37,9 @@ public class ConfigManager {
         FileConfiguration config = plugin.getConfig();
         int version = config.getInt("config-version", 0);
 
-        // If version is 0 (old config) or less than current 1
-        if (version < 1) {
-            config.set("config-version", 1);
+        // If version is less than 2
+        if (version < 2) {
+            config.set("config-version", 2);
             if (!config.contains("food-replenish.delay"))
                 config.set("food-replenish.delay", 5);
             if (!config.contains("food-replenish.amount"))
@@ -47,7 +47,7 @@ public class ConfigManager {
             if (!config.contains("default-stats-on-death"))
                 config.set("default-stats-on-death", 25);
             plugin.saveConfig();
-            plugin.getLogger().info("Config updated to version 1.");
+            plugin.getLogger().info("Config updated to version 2.");
         }
     }
 
