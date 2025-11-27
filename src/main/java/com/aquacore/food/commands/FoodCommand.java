@@ -24,7 +24,8 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
         if (args.length == 0) {
             sender.sendMessage("§bAquaCore-Food §7v" + plugin.getDescription().getVersion());
             sender.sendMessage("§7Use §f/aquafood help §7for commands.");
@@ -41,23 +42,29 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
             case "carbs":
                 if (sender instanceof Player p) {
                     sender.sendMessage("§eCarbohydrates: §f" + data.getCarbs(p));
-                } else sender.sendMessage("§cOnly players.");
+                } else
+                    sender.sendMessage("§cOnly players.");
                 break;
             case "vit":
                 if (sender instanceof Player p) {
                     sender.sendMessage("§eVitamins: §f" + data.getVit(p));
-                } else sender.sendMessage("§cOnly players.");
+                } else
+                    sender.sendMessage("§cOnly players.");
                 break;
             case "prot":
                 if (sender instanceof Player p) {
                     sender.sendMessage("§eProteins: §f" + data.getProt(p));
-                } else sender.sendMessage("§cOnly players.");
+                } else
+                    sender.sendMessage("§cOnly players.");
                 break;
             case "set":
                 handleSet(sender, args);
                 break;
             case "add":
                 handleAdd(sender, args);
+                break;
+            case "reload":
+                handleReload(sender);
                 break;
             default:
                 sender.sendMessage("§cUnknown command.");
@@ -74,6 +81,7 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage("§f/aquafood prot §7- Show proteins");
         sender.sendMessage("§f/aquafood set <stat> <val> <player> §7- Set stat");
         sender.sendMessage("§f/aquafood add <stat> <val> <player> §7- Add/Sub stat");
+        sender.sendMessage("§f/aquafood reload §7- Reload config");
     }
 
     private void handleSet(CommandSender sender, String[] args) {
@@ -146,10 +154,20 @@ public class FoodCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage("§aAdded " + val + " to " + stat + " for " + target.getName());
     }
 
+    private void handleReload(CommandSender sender) {
+        if (!sender.hasPermission("aquafood.admin")) {
+            sender.sendMessage("§cNo permission.");
+            return;
+        }
+        plugin.getConfigManager().reload();
+        sender.sendMessage("§aConfiguration reloaded.");
+    }
+
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("help", "carbs", "vit", "prot", "set", "add");
+            return Arrays.asList("help", "carbs", "vit", "prot", "set", "add", "reload");
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add"))) {
             return Arrays.asList("carbs", "vit", "prot");

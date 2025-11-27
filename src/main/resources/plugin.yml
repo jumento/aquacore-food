@@ -18,5 +18,5 @@ permissions:
     description: Allows use of basic commands
     default: true
   aquafood.admin:
-    description: Allows use of admin commands (set, add)
+    description: Allows use of admin commands (set, add, reload)
     default: op

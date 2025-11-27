@@ -21,13 +21,14 @@ AquaCore-Food is a custom Minecraft plugin designed to enhance food and saturati
 | Command | Alias | Description | Permission |
 | :--- | :--- | :--- | :--- |
 | `/aquafood help` | `food`, `afood` | Main command. Shows help menu. | `aquafood.use` |
+| `/aquafood reload` | | Reloads the configuration. | `aquafood.admin` |
 
 ## Permissions
 
 | Permission | Description | Default |
 | :--- | :--- | :--- |
 | `aquafood.use` | Allows use of basic commands. | `true` |
-| `aquafood.admin` | Allows use of admin commands (set, add). | `op` |
+| `aquafood.admin` | Allows use of admin commands (set, add, reload). | `op` |
 
 ## Configuration
 
