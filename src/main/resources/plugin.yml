@@ -1,5 +1,5 @@
 name: AquaCore-Food
-version: '${version}'
+version: '1.1-SNAPSHOT'
 main: com.aquacore.food.AquaCoreFood
 api-version: '1.21'
 softdepend: [PlaceholderAPI]

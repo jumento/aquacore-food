@@ -17,6 +17,7 @@ public class PlayerDataManager {
     private final NamespacedKey protKey;
     private final NamespacedKey vitKey;
     private final Map<UUID, Long> lastFoodRegen = new HashMap<>();
+    private final Map<UUID, Long> lastReplenish = new HashMap<>();
 
     public PlayerDataManager(AquaCoreFood plugin) {
         this.plugin = plugin;
@@ -31,6 +32,14 @@ public class PlayerDataManager {
 
     public void setLastFoodRegen(Player player, long time) {
         lastFoodRegen.put(player.getUniqueId(), time);
+    }
+
+    public long getLastReplenish(Player player) {
+        return lastReplenish.getOrDefault(player.getUniqueId(), 0L);
+    }
+
+    public void setLastReplenish(Player player, long time) {
+        lastReplenish.put(player.getUniqueId(), time);
     }
 
     public int getCarbs(Player player) {

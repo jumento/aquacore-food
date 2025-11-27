@@ -24,6 +24,17 @@ public class DamageListener implements Listener {
             return;
         }
 
+        // Lose 1 haunch (2 food points)
+        int oldFood = player.getFoodLevel();
+        if (oldFood > 0) {
+            player.setFoodLevel(Math.max(0, oldFood - 2));
+        }
+
+        // Gain 0.5 hearts (1 health point)
+        double maxHealth = player.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getValue();
+        double newHealth = player.getHealth() + 1.0;
+        player.setHealth(Math.min(maxHealth, newHealth));
+
         ConfigManager config = plugin.getConfigManager();
         PlayerDataManager data = plugin.getPlayerDataManager();
 

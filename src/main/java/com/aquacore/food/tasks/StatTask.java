@@ -27,26 +27,11 @@ public class StatTask extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             handleDecay(player);
             handleRegen(player);
+            handleDecay(player);
+            handleRegen(player);
+            handleReplenish(player);
             handleEffects(player);
         }
-    }
-
-    private void handleDecay(Player player) {
-        PlayerDataManager data = plugin.getPlayerDataManager();
-        ConfigManager config = plugin.getConfigManager();
-
-        checkAndDecay(player, "carbohydrates", data.getCarbs(player), config.getDecayFrequency("carbohydrates"),
-                config.getDecayAmount("carbohydrates"));
-        checkAndDecay(player, "proteins", data.getProt(player), config.getDecayFrequency("proteins"),
-                config.getDecayAmount("proteins"));
-        checkAndDecay(player, "vitamins", data.getVit(player), config.getDecayFrequency("vitamins"),
-                config.getDecayAmount("vitamins"));
-    }
-
-    private void checkAndDecay(Player player, String stat, int currentVal, int freq, int amount) {
-        // Simple modulo check based on global time might desync per player, but it's
-        // efficient.
-        // For per-player timers, we'd need to store last decay time.
         // For MVP, let's use global tick count. If freq is 45s, we check if ticks %
         // (45*20) == 0.
         // Wait, ticks is in ticks. freq is in seconds.
@@ -82,6 +67,33 @@ public class StatTask extends BukkitRunnable {
             if (amp >= 0) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, amp, true, false));
             }
+        }
+    }
+
+    private void handleReplenish(Player player) {
+        if (player.getFoodLevel() >= 20)
+            return;
+
+        ConfigManager config = plugin.getConfigManager();
+        PlayerDataManager data = plugin.getPlayerDataManager();
+        long lastReplenish = data.getLastReplenish(player);
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastReplenish >= config.getReplenishDelay() * 1000L) {
+            // Sacrifice stats
+            int carbDmg = config.getDamageMax("carbohydrates");
+            int protDmg = config.getDamageMax("proteins");
+            int vitDmg = config.getDamageMax("vitamins");
+
+            data.addStat(player, "carbohydrates", -carbDmg);
+            data.addStat(player, "proteins", -protDmg);
+            data.addStat(player, "vitamins", -vitDmg);
+
+            // Restore food
+            int newFood = Math.min(20, player.getFoodLevel() + config.getReplenishAmount());
+            player.setFoodLevel(newFood);
+
+            data.setLastReplenish(player, currentTime);
         }
     }
 

@@ -12,17 +12,40 @@ public class ConfigManager {
     private final AquaCoreFood plugin;
     private Map<Integer, RegenRule> regenRules = new HashMap<>();
     private Map<String, Integer> damageSettings = new HashMap<>();
+    private int replenishDelay = 5;
+    private int replenishAmount = 1;
 
     public ConfigManager(AquaCoreFood plugin) {
         this.plugin = plugin;
+        updateConfig();
         loadRegenRules();
         loadDamageSettings();
+        loadReplenishSettings();
     }
 
     public void reload() {
         plugin.reloadConfig();
+        updateConfig();
         loadRegenRules();
         loadDamageSettings();
+        loadReplenishSettings();
+    }
+
+    private void updateConfig() {
+        plugin.saveDefaultConfig();
+        FileConfiguration config = plugin.getConfig();
+        int version = config.getInt("config-version", 0);
+
+        // If version is 0 (old config) or less than current 1
+        if (version < 1) {
+            config.set("config-version", 1);
+            if (!config.contains("food-replenish.delay"))
+                config.set("food-replenish.delay", 5);
+            if (!config.contains("food-replenish.amount"))
+                config.set("food-replenish.amount", 1);
+            plugin.saveConfig();
+            plugin.getLogger().info("Config updated to version 1.");
+        }
     }
 
     private void loadRegenRules() {
@@ -56,6 +79,11 @@ public class ConfigManager {
         }
     }
 
+    private void loadReplenishSettings() {
+        replenishDelay = plugin.getConfig().getInt("food-replenish.delay", 5);
+        replenishAmount = plugin.getConfig().getInt("food-replenish.amount", 1);
+    }
+
     public RegenRule getRegenRule(int average) {
         // Find the closest lower or equal key (0, 10, 20...)
         int key = (average / 10) * 10;
@@ -72,6 +100,14 @@ public class ConfigManager {
 
     public int getDamageMax(String stat) {
         return damageSettings.getOrDefault(stat, 0);
+    }
+
+    public int getReplenishDelay() {
+        return replenishDelay;
+    }
+
+    public int getReplenishAmount() {
+        return replenishAmount;
     }
 
     public static class RegenRule {

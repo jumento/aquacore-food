@@ -1,4 +1,11 @@
 # AquaCore-Food Configuration
+config-version: 1
+
+# Food Replenishment Settings
+# When food is low, sacrifice stats to restore food
+food-replenish:
+  delay: 5 # Seconds between replenishment
+  amount: 1 # Amount of food to restore per cycle
 
 # Decay Settings
 # Frequency in seconds
