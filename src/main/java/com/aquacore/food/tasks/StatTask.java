@@ -30,19 +30,34 @@ public class StatTask extends BukkitRunnable {
             handleReplenish(player);
             handleEffects(player);
         }
-    }
 
     private void handleDecay(Player player) {
         PlayerDataManager data = plugin.getPlayerDataManager();
         ConfigManager config = plugin.getConfigManager();
 
         boolean sprinting = player.isSprinting();
-        int freqMod = sprinting ? 2 : 1;
+        int freqMod = sprinting ? 10 : 1;
 
-        // Calculate amount modifiers based on sprinting
-        int carbMod = sprinting ? config.getDamageMax("carbohydrates") : 1;
-        int protMod = sprinting ? config.getDamageMax("proteins") : 1;
-        int vitMod = sprinting ? config.getDamageMax("vitamins") : 1;
+        // Count stats at zero
+        int zeroStats = 0;
+        if (data.getCarbs(player) <= 0)
+            zeroStats++;
+        if (data.getProt(player) <= 0)
+            zeroStats++;
+        if (data.getVit(player) <= 0)
+            zeroStats++;
+
+        // Calculate penalty modifier
+        int penaltyMod = 1;
+        if (zeroStats == 1)
+            penaltyMod = 2;
+        else if (zeroStats >= 2)
+            penaltyMod = 5;
+
+        // Calculate amount modifiers based on sprinting and penalty
+        int carbMod = (sprinting ? config.getDamageMax("carbohydrates") : 1) * penaltyMod;
+        int protMod = (sprinting ? config.getDamageMax("proteins") : 1) * penaltyMod;
+        int vitMod = (sprinting ? config.getDamageMax("vitamins") : 1) * penaltyMod;
 
         checkAndDecay(player, "carbohydrates", data.getCarbs(player),
                 config.getDecayFrequency("carbohydrates") / freqMod, config.getDecayAmount("carbohydrates") * carbMod);
