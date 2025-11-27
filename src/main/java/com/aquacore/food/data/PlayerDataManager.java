@@ -18,6 +18,7 @@ public class PlayerDataManager {
     private final NamespacedKey vitKey;
     private final Map<UUID, Long> lastFoodRegen = new HashMap<>();
     private final Map<UUID, Long> lastReplenish = new HashMap<>();
+    private final Map<UUID, Map<String, Long>> commandCooldowns = new HashMap<>();
 
     public PlayerDataManager(AquaCoreFood plugin) {
         this.plugin = plugin;
@@ -40,6 +41,16 @@ public class PlayerDataManager {
 
     public void setLastReplenish(Player player, long time) {
         lastReplenish.put(player.getUniqueId(), time);
+    }
+
+    public long getLastCommandExecution(Player player, String command) {
+        return commandCooldowns.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>())
+                .getOrDefault(command, 0L);
+    }
+
+    public void setLastCommandExecution(Player player, String command, long time) {
+        commandCooldowns.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>())
+                .put(command, time);
     }
 
     public int getCarbs(Player player) {
@@ -68,8 +79,7 @@ public class PlayerDataManager {
 
     private int getStat(Player player, NamespacedKey key) {
         PersistentDataContainer container = player.getPersistentDataContainer();
-        return container.getOrDefault(key, PersistentDataType.INTEGER, 100); // Default 100? Or 0? Assuming 100 as max
-                                                                             // health start.
+        return container.getOrDefault(key, PersistentDataType.INTEGER, 100);
     }
 
     private void setStat(Player player, NamespacedKey key, int value) {

@@ -185,6 +185,31 @@ public class StatTask extends BukkitRunnable {
                     } catch (Exception ignored) {
                     }
                 }
+
+                // Execute timed commands
+                for (String cmdStr : effectsSec.getStringList(key + ".commands")) {
+                    String[] parts = cmdStr.split(";");
+                    if (parts.length >= 2) {
+                        try {
+                            String command = parts[0].replace("<player>", player.getName());
+                            long interval = Long.parseLong(parts[1]);
+                            long lastExec = plugin.getPlayerDataManager().getLastCommandExecution(player, cmdStr); // Use
+                                                                                                                   // full
+                                                                                                                   // string
+                                                                                                                   // as
+                                                                                                                   // hash
+                                                                                                                   // key
+                            long currentTime = System.currentTimeMillis();
+
+                            if (currentTime - lastExec >= interval * 1000L) {
+                                Bukkit.getScheduler().runTask(plugin,
+                                        () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+                                plugin.getPlayerDataManager().setLastCommandExecution(player, cmdStr, currentTime);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
             }
         }
     }
