@@ -1,0 +1,22 @@
+name: AquaCore-Food
+version: '${project.version}'
+main: com.aquacore.food.AquaCoreFood
+api-version: '1.21'
+softdepend: [PlaceholderAPI]
+authors: [JumeAntigravity]
+description: Custom food and saturation mechanics.
+
+commands:
+  aquafood:
+    description: Main command for AquaCore-Food
+    usage: /aquafood help
+    permission: aquafood.use
+    aliases: [food, afood]
+
+permissions:
+  aquafood.use:
+    description: Allows use of basic commands
+    default: true
+  aquafood.admin:
+    description: Allows use of admin commands (set, add)
+    default: op
