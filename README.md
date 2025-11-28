@@ -13,26 +13,6 @@ AquaCore-Food is a custom Minecraft plugin designed to enhance food and saturati
 1.  Download the latest release of `AquaCore-Food`.
 2.  Place the `.jar` file into your server's `plugins` folder.
 3.  Restart your server.
-4.  Edit the `config.yml` file in the `plugins/AquaCore-Food` directory to customize settings.
-5.  Restart the server or reload the plugin to apply changes.
-
-## Commands
-
-| Command | Description | Permission |
-| :--- | :--- | :--- |
-| `/aquafood help` | Shows the help menu. | `aquafood.use` |
-| `/aquafood carbs` | Shows your current carbohydrates level. | `aquafood.use` |
-| `/aquafood vit` | Shows your current vitamins level. | `aquafood.use` |
-| `/aquafood prot` | Shows your current proteins level. | `aquafood.use` |
-| `/aquafood set <stat> <val> <player>` | Sets a specific stat for a player. | `aquafood.admin` |
-| `/aquafood add <stat> <val> <player>` | Adds (or subtracts) from a stat for a player. | `aquafood.admin` |
-| `/aquafood reload` | Reloads the plugin configuration. | `aquafood.admin` |
-
-## Permissions
-
-| Permission | Description | Recommended Role |
-| :--- | :--- | :--- |
-| `aquafood.use` | Allows access to basic info commands (`help`, `carbs`, `vit`, `prot`). | Default / Players |
 | `aquafood.admin` | Grants access to administrative commands (`set`, `add`, `reload`). | Admins / Ops |
 
 ## Placeholders
